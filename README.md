@@ -1,366 +1,154 @@
-<div align="center">
+# Realtime Captions – Windows GUI
 
-# 📺 realtime-captions-system-audio
+Sottotitoli in tempo reale per tutto l'audio riprodotto dal computer.
 
-**Live subtitles for everything playing on your computer — no microphone, no cloud, no subscription.**
+L'app cattura l'audio di sistema tramite WASAPI, lo trascrive localmente con
+Whisper e mostra il testo in una moderna interfaccia Windows e, opzionalmente,
+in un overlay sempre in primo piano.
 
-<p align="center">
-  <img src="https://github.com/emidium-science/realtime-captions-system-audio/releases/download/dev/demo.gif" alt="realtime-captions-system-audio demo" width="800">
-</p>
+Nessun account, servizio cloud o abbonamento è necessario. Dopo il download
+iniziale del modello, la trascrizione funziona offline.
 
-<p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776ab?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+"></a>
-  <a href="https://github.com/openai/whisper"><img src="https://img.shields.io/badge/Powered%20by-Whisper-412991?style=for-the-badge&logo=openai&logoColor=white" alt="Powered by Whisper"></a>
-  <img src="https://img.shields.io/badge/Platform-Windows%2011-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Windows 11">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge" alt="MIT License"></a>
-</p>
+## Funzionalità
 
-<p align="center">
-  <a href="#-quick-start">Quick Start</a> ·
-  <a href="#-features">Features</a> ·
-  <a href="#-use-cases">Use Cases</a> ·
-  <a href="#%EF%B8%8F-setup-wizard">Setup Wizard</a> ·
-  <a href="#-model-selection-guide">Models</a> ·
-  <a href="#-faq">FAQ</a> ·
-  <a href="docs/architecture.md">Architecture</a>
-</p>
+- Cattura diretta dell'audio di sistema, senza microfono o cavi virtuali.
+- Interfaccia grafica pulita e semplice da usare.
+- Download e gestione dei modelli Whisper direttamente dalla GUI.
+- Scelta indipendente del modello installato da utilizzare.
+- Supporto per `tiny.en`, `small.en` e `medium.en`.
+- Accelerazione NVIDIA CUDA, selezionata come impostazione predefinita.
+- Modalità CPU disponibile per computer senza GPU NVIDIA compatibile.
+- Sottotitoli sovrapposti, allineati a sinistra e sempre aggiornati sul testo più recente.
+- Trascrizione live e cronologia delle frasi completate.
+- Salvataggio progressivo delle trascrizioni in file `.txt`.
+- Monitoraggio di CPU, RAM, GPU e VRAM.
+- Protezione da avvii multipli: il collegamento apre una sola istanza dell'app.
+- Elaborazione interamente locale per tutelare la privacy.
 
-</div>
+## Requisiti
 
----
+- Windows 11.
+- Python 3.11 o superiore.
+- Un dispositivo audio compatibile con WASAPI loopback.
+- Connessione Internet solo per installazione e download dei modelli.
+- GPU NVIDIA consigliata, ma non obbligatoria.
 
-Powered by [OpenAI Whisper](https://github.com/openai/whisper) via [RealtimeSTT](https://github.com/KoljaB/RealtimeSTT).
-Captures whatever your computer plays through **WASAPI loopback** — meetings, videos, podcasts, calls — and shows live captions instantly. **Audio never leaves your machine.**
+## Installazione
 
----
+Scarica o clona la repository:
 
-## ✨ Features
-
-| Feature | Description |
-|---|---|
-| **Real-time captions** | Partial text updates as speech is detected, before the sentence is complete |
-| **High-accuracy final text** | Stable Whisper transcription committed after each utterance |
-| **System audio capture** | WASAPI loopback — no virtual cable, no microphone, no extra software |
-| **Floating subtitle overlay** | Borderless always-on-top window over every app, click-through |
-| **Full-screen terminal UI** | Rich display with live text, history, and resource panels |
-| **GPU / CPU monitor** | Real-time CPU, RAM, GPU load and temperature |
-| **Save to file** | Timestamped `.txt` transcripts written to `transcripts/` as you speak |
-| **Interactive setup wizard** | Two-step guided setup: pick device, models, and options |
-| **CUDA acceleration** | GPU-accelerated inference for ultra-low latency on NVIDIA cards |
-| **100% offline** | Fully local after the one-time Whisper model download |
-
----
-
-## 🎯 Use Cases
-
-> **Not fluent in English yet?** This tool was built for you.
-
-### 🌍 International remote work
-Starting a job at a company where meetings happen in English — but you're still building fluency? Real-time captions let you read every word your colleagues say, in the moment, with zero delay. No rewinding, no asking people to repeat themselves.
-
-### 🎓 Language learning
-Captions reinforce listening comprehension by mapping sounds to words as you hear them. Watch English content and read along simultaneously — one of the most effective methods for accelerating fluency.
-
-### 🔇 Noisy environments
-Working from a busy café or open office? Missed audio translates directly to missed context. Captions keep you in sync even when conditions are poor.
-
-### ♿ Accessibility
-Always-on, offline captions for people with hearing difficulties — no account, no subscription, no data leaving your machine.
-
-### 📝 Meeting transcription
-Save a timestamped `.txt` transcript of every call, lecture, or video. Searchable, copy-pasteable, and ready for notes or summaries.
-
-### 🎬 Foreign-language video
-Watching a video or lecture in a second language without subtitles? Get instant captions without waiting for YouTube's auto-subtitle delay.
-
----
-
-## 🚀 Quick Start
-
-### Windows graphical installer
-
-Double-click `install.bat`. It creates an isolated Python environment, installs
-the dependencies, downloads the requested Icons8 icon and creates a **Realtime
-Captions** desktop shortcut. Whisper models (`tiny.en`, `small.en`, and
-`medium.en`) can then be downloaded and selected independently from the GUI.
-
-The original terminal interface remains available with `python console.py`.
-
-### 1. Install dependencies
-
-```bash
-pip install -r requirements.txt
+```powershell
+git clone https://github.com/raffaele-pet/realtime-captions-system-audio-gui.git
+cd realtime-captions-system-audio-gui
 ```
 
-> **Note:** `pyaudiowpatch` is a specialized fork of PyAudio with WASAPI loopback support.
-> Do **not** install plain `pyaudio` alongside it — they conflict.
+Esegui:
 
-### 2. Run
-
-```bash
-python main.py
+```text
+install.bat
 ```
 
-The interactive wizard launches automatically. No config files, no flags — answer the prompts and start reading.
+L'installer:
 
----
+1. crea un ambiente Python isolato in `.venv`;
+2. installa RealtimeSTT, Faster Whisper, Silero VAD e le altre dipendenze;
+3. scarica e prepara l'icona dell'app;
+4. crea il collegamento **Realtime Captions** sul desktop;
+5. avvia l'interfaccia grafica.
 
-## 💻 Platform Support
+L'installer può essere eseguito nuovamente per riparare o aggiornare le
+dipendenze senza eliminare modelli e trascrizioni.
 
-| Platform | Status |
-|---|---|
-| **Windows 11** | ✅ Fully supported |
-| macOS | 🚧 Not yet implemented |
-| Linux | 🚧 Not yet implemented |
+## Utilizzo
 
-> Windows support uses WASAPI loopback, which is built into Windows audio drivers.
-> macOS and Linux contributions are welcome.
+1. Apri **Realtime Captions** dal collegamento sul desktop.
+2. Seleziona il dispositivo audio che sta riproducendo il contenuto.
+3. Scarica uno o più modelli Whisper.
+4. Scegli il modello attivo e il tipo di elaborazione.
+5. Abilita, se desiderato, overlay e salvataggio su file.
+6. Premi **Avvia trascrizione**.
+7. Premi **Stop ascolto** per terminare la sessione.
 
----
+Puoi scaricare tutti e tre i modelli e cambiare quello attivo prima di ogni
+sessione.
 
-## ⚙️ Setup Wizard
+## Modelli disponibili
 
-### Step 1 — Choose your audio device
+| Modello | Download indicativo | Profilo | Utilizzo consigliato |
+|---|---:|---|---|
+| `tiny.en` | ~75 MB | Molto veloce | Sottotitoli rapidi e sistemi meno potenti |
+| `small.en` | ~460 MB | Bilanciato | Miglior compromesso tra velocità e precisione |
+| `medium.en` | ~1,5 GB | Accurato | Trascrizioni più precise con hardware adeguato |
 
-Lists every active output device available for loopback capture:
+I modelli `.en` sono ottimizzati per l'inglese. I file vengono conservati nella
+cache locale di Hugging Face e non vengono inclusi nella repository.
 
-```
-┌───┬───────────────────────────┬───────────┬──────────┐
-│ # │ Device                    │      Rate │ Channels │
-├───┼───────────────────────────┼───────────┼──────────┤
-│ 1 │ Headphones (Zone Vibe)    │ 48000 Hz  │        2 │
-│ 2 │ Speakers (Realtek)        │ 48000 Hz  │        2 │
-└───┴───────────────────────────┴───────────┴──────────┘
-```
+## CPU e CUDA
 
-Use ↑ / ↓ arrow keys to select, then press **Enter**.
+`CUDA` è l'impostazione predefinita. Richiede una GPU NVIDIA e driver
+compatibili. Se l'avvio fallisce su un computer senza CUDA, seleziona `cpu`
+dalla voce **Elaborazione**.
 
-### Step 2 — Configure accuracy and display
+Il modello rimane in RAM o VRAM durante l'ascolto. I buffer audio sono limitati,
+la cronologia nell'interfaccia conserva al massimo 100 segmenti e il testo live
+non cresce indefinitamente. Le trascrizioni complete vengono scritte
+progressivamente nella cartella `transcripts`.
 
-| Option | What it controls |
-|---|---|
-| **Transcription model** | Final accuracy: `tiny.en` → `small.en` ★ → `medium.en` → `large-v2` |
-| **Real-time preview model** | Live display speed: `tiny.en` ★ (recommended) |
-| **Compute device** | CUDA (GPU, fast) or CPU (no GPU needed) |
-| **Language** | English (faster) or auto-detect (multilingual) |
-| **Resource monitor** | Show CPU / RAM / GPU panel in terminal |
-| **Save to file** | Write transcript to `transcripts/` folder |
-| **Caption overlay** | Show floating subtitle window over all apps |
+## Privacy
 
----
+- L'audio non viene inviato a servizi di trascrizione online.
+- La trascrizione avviene sul computer dell'utente.
+- Non sono richiesti account o API key.
+- Internet viene utilizzato soltanto per scaricare dipendenze e modelli.
 
-## 🖥️ Terminal UI
+## Interfaccia da terminale
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ● Listening  │  Headphones  │  model: small.en  │  Ctrl+C to stop
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-╭──── System  RTX 4070 ─────────────────────────────────╮
-│  CPU  ████████░░░░  58.0%   RAM  ████░░░░  12/32 GB   │
-│  GPU  ███████░░░░░  65.0%  61°C  VRAM  ████░░  5/8 GB │
-╰───────────────────────────────────────────────────────╯
-╭──── ◉  Live ──────────────────────────────────────────╮
-│                                                       │
-│   And this is what I wanted to show you today…       │  ← yellow
-│                                                       │
-╰───────────────────────────────────────────────────────╯
-╭──── ≡  History ───────────────────────────────────────╮
-│  14:23:01 │ Welcome everyone to today's session.      │
-│  14:24:15 │ Let's start with a quick overview.        │
-╰───────────────────────────────────────────────────────╯
+La precedente interfaccia testuale resta disponibile per utenti avanzati:
+
+```powershell
+.venv\Scripts\python.exe console.py
 ```
 
-Press **Ctrl+C** at any time to stop cleanly.
+## Risoluzione dei problemi
 
----
+### Nessun dispositivo audio disponibile
 
-## 🪟 Caption Overlay
+Avvia la riproduzione di un audio e premi il pulsante di aggiornamento accanto
+alla sorgente. È inoltre disponibile il controllo diagnostico:
 
-The optional floating overlay renders subtitles **on top of every application** — video calls, browsers, fullscreen apps — exactly like movie subtitles.
-
-| Behaviour | Detail |
-|---|---|
-| Always on top | Floats above every window |
-| Click-through | Mouse clicks reach the app behind it |
-| Auto-hides | Invisible when silent, appears instantly on speech |
-| Not in taskbar | Hidden from Alt+Tab and the taskbar |
-| Position | Centred, 72 px above the Windows taskbar |
-
----
-
-## 📊 Model Selection Guide
-
-### Transcription model (final accuracy)
-
-| Model | VRAM | Accuracy | Best for |
-|---|---|---|---|
-| `tiny.en` | ~1 GB | Good | Fast machines, casual use |
-| `small.en` ★ | ~2 GB | Very good | **Recommended** — best balance |
-| `medium.en` | ~5 GB | Excellent | High-stakes meetings |
-| `large-v2` | ~10 GB | Best | Maximum accuracy |
-
-### Real-time preview model
-
-| Model | Latency | Best for |
-|---|---|---|
-| `tiny.en` ★ | Very low | **Recommended** for live display |
-| `base.en` | Low | Slightly better live accuracy |
-| `small.en` | Medium | Best quality live display |
-
-`.en` models are English-only and faster than their multilingual equivalents.
-
----
-
-## 💾 Saving Transcripts
-
-When you enable **Save to file**, every completed sentence is written immediately to:
-
-```
-transcripts/transcript_YYYYMMDD_HHMMSS.txt
+```powershell
+.venv\Scripts\python.exe tools\check_loopback.py
 ```
 
-File format:
+### Il modello non parte con CUDA
 
-```
-# Transcription started 2026-03-21 14:23:01
-# Source : Headphones (Zone Vibe) [Loopback]
-# Model  : small.en
+Verifica i driver NVIDIA oppure seleziona `cpu` nell'interfaccia.
 
-[14:23:04] Welcome everyone to today's session.
-[14:24:18] Let's start with a quick overview of the agenda.
+### Dove vengono salvate le trascrizioni?
 
-# Transcription ended 2026-03-21 15:01:00
-```
+I file si trovano nella cartella `transcripts` con nome simile a:
 
-Files are written in **append mode** — safe to re-run with the same filename.
-
----
-
-## 🔧 Loopback Diagnostic
-
-If you're unsure whether loopback is working, run the diagnostic while playing any audio:
-
-```bash
-python tools/check_loopback.py
+```text
+transcript_20260922_143000.txt
 ```
 
-Captures 10 seconds, prints RMS levels per chunk, and confirms if the stream is healthy.
+I dettagli degli errori dell'interfaccia vengono registrati in
+`logs/realtime-captions.log`.
 
----
+## Componenti principali
 
-## 📋 Requirements
+- [RealtimeSTT](https://github.com/KoljaB/RealtimeSTT)
+- [faster-whisper](https://github.com/SYSTRAN/faster-whisper)
+- [Silero VAD](https://github.com/snakers4/silero-vad)
+- [PyAudioWPatch](https://github.com/s0d3s/PyAudioWPatch)
 
-- **Python 3.11+**
-- **Windows 11** (WASAPI loopback)
-- Audio driver with WASAPI loopback support (most Realtek and USB audio drivers qualify)
-- NVIDIA GPU recommended for CUDA acceleration — CPU fallback is available
+## Crediti
 
----
+Questo progetto deriva da
+[emidium-science/realtime-captions-system-audio](https://github.com/emidium-science/realtime-captions-system-audio)
+ed è stato ampliato con installer Windows, gestione grafica dei modelli,
+interfaccia desktop, overlay aggiornato, controlli di memoria e avvio a istanza
+singola.
 
-## 🙋 FAQ
-
-<details>
-<summary><strong>Can I use this without a GPU?</strong></summary>
-
-Yes. Select CPU at the compute device prompt. `tiny.en` and `small.en` run well on modern CPUs, though with higher latency than CUDA.
-</details>
-
-<details>
-<summary><strong>Will this work with Bluetooth headphones?</strong></summary>
-
-Yes, as long as your Bluetooth audio device appears as a WASAPI output device (it normally does on Windows 11). Select it in the wizard.
-</details>
-
-<details>
-<summary><strong>Does it work with Zoom / Teams / Google Meet?</strong></summary>
-
-Yes. It captures whatever your computer plays — including the audio from video call participants. It does not capture your own microphone.
-</details>
-
-<details>
-<summary><strong>Can I use it with non-English content?</strong></summary>
-
-Yes. Select **Auto-detect** in the language step. The first transcription will be slightly slower while Whisper detects the language, then it continues in that language.
-</details>
-
-<details>
-<summary><strong>Does it upload audio anywhere?</strong></summary>
-
-No. Everything runs locally. No internet connection is needed after the Whisper model is downloaded once.
-</details>
-
-<details>
-<summary><strong>How much disk space do the models use?</strong></summary>
-
-`tiny.en`: ~75 MB · `small.en`: ~460 MB · `medium.en`: ~1.5 GB · `large-v2`: ~2.9 GB.
-Models are cached in `%USERPROFILE%\.cache\huggingface\hub\` and downloaded automatically on first use.
-</details>
-
-<details>
-<summary><strong>My audio device is not showing up. What should I do?</strong></summary>
-
-Run `python tools/check_loopback.py` while audio is playing. Ensure the output device is set as active in Windows Sound Settings and that no other app has exclusive control of it.
-</details>
-
----
-
-## 🗂️ Project Structure
-
-```
-realtime-captions-system-audio/
-├── main.py                          # Entry point — run this
-├── requirements.txt
-├── .gitignore
-├── README.md
-│
-├── src/
-│   └── realtime_captions/
-│       ├── __init__.py
-│       ├── config.py                # Config dataclass, constants, model choices
-│       ├── state.py                 # Thread-safe shared state
-│       ├── audio.py                 # WASAPI loopback capture + resampling
-│       ├── resources.py             # CPU / RAM / GPU monitor thread
-│       ├── ui.py                    # Rich terminal panels + refresh loop
-│       ├── overlay.py               # Floating caption overlay (Tkinter)
-│       ├── wizard.py                # Interactive setup wizard
-│       └── app.py                   # Orchestrator — wires all threads
-│
-├── tools/
-│   └── check_loopback.py           # Loopback diagnostic utility
-│
-├── transcripts/                     # Saved .txt transcripts (git-ignored)
-│
-└── docs/
-    ├── architecture.md
-    ├── configuration.md
-    ├── overlay.md
-    └── dependencies.md
-```
-
----
-
-## 📖 Documentation
-
-| File | Contents |
-|---|---|
-| [`docs/architecture.md`](docs/architecture.md) | Thread model, data flow, module responsibilities |
-| [`docs/configuration.md`](docs/configuration.md) | All Config fields and wizard options explained |
-| [`docs/overlay.md`](docs/overlay.md) | Caption overlay design, Windows API details, known limits |
-| [`docs/dependencies.md`](docs/dependencies.md) | Full dependency list with version notes |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome — especially macOS and Linux audio capture backends.
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feat/macos-capture`
-3. Commit your changes
-4. Open a Pull Request
-
----
-
-## 📄 License
-
-MIT — free to use, modify, and distribute.
+L'icona del collegamento desktop è fornita da
+[Icons8](https://icons8.it/icon/QfXoGJ7IiNP0/chat-room).
