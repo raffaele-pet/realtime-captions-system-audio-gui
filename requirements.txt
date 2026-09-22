@@ -1,0 +1,24 @@
+# Core speech-to-text engine (includes Whisper + VAD)
+RealtimeSTT[silero-onnx-cpu]
+
+# Local Whisper inference + explicit model downloads used by the GUI
+faster-whisper>=1.1
+huggingface-hub>=0.27
+
+# WASAPI loopback audio capture (Windows) — do NOT install alongside plain pyaudio
+pyaudiowpatch>=0.2.12.8
+
+# PCM resampling
+numpy>=2.0
+
+# System resource metrics
+psutil>=7.0
+
+# NVIDIA GPU metrics (NVML) — install nvidia-ml-py, NOT the deprecated pynvml shim
+nvidia-ml-py>=13.0
+
+# Interactive terminal prompts
+questionary>=2.0
+
+# Full-screen terminal UI
+rich>=14.0

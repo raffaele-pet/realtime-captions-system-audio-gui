@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# Transcripts — keep the directory, ignore the contents
+transcripts/*.txt
+!transcripts/.gitkeep
+
+# Logs — keep the directory, ignore the contents
+logs/*.log
+!logs/.gitkeep
+
+# Test artifacts
+loopback_test.wav
+realtimesst.log
+
+# Legacy transcript files that were created before the transcripts/ subfolder
+transcript_*.txt
+
+# IDEs / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Hugging Face model cache (never commit model weights)
+*.bin
+*.safetensors
+
+# Generated local assets and smoke-test cache
+/assets/
+/work/
